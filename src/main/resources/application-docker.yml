@@ -1,0 +1,28 @@
+server:
+  port: 8081
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+    hostname: ekumen-bank-accounts
+spring:
+  jackson:
+    default-property-inclusion: non_null
+    serialization:
+      indent-output: false
+  r2dbc:
+    url: "r2dbc:postgresql://host.docker.internal:5433/ekumen-bank"
+    username: ekumen-bank
+    password: ekumen-bank
+    show-sql: true
+logging:
+  level:
+    ec:
+      dev:
+        samagua:
+          ekumen_bank_accounts: DEBUG
+
+ekumen-bank-clients:
+  url: http://ekumen-gateway:8762/ekumen-bank-clients/api
