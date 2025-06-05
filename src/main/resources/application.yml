@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: ekumen-bank-accounts
+  profiles:
+    active: dev
