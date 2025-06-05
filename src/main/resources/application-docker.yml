@@ -25,4 +25,4 @@ logging:
           ekumen_bank_accounts: DEBUG
 
 ekumen-bank-clients:
-  url: http://ekumen-gateway:8762/ekumen-bank-clients/api
+  url: http://ekumen-cloud-gateway:8762/ekumen-bank-clients/api
