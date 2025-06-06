@@ -2,6 +2,7 @@ package ec.dev.samagua.ekumen_bank_accounts.services.impl;
 
 import ec.dev.samagua.ekumen_bank_accounts.models.Cuenta;
 import ec.dev.samagua.ekumen_bank_accounts.infrastructure.clients.clients.ClienteServiceClient;
+import ec.dev.samagua.ekumen_bank_accounts.models.validators.CuentaValidator;
 import ec.dev.samagua.ekumen_bank_accounts.repositories.impl.CuentaRepository;
 import ec.dev.samagua.ekumen_bank_accounts.repositories.impl.MovimientoCuentaRepository;
 import ec.dev.samagua.ekumen_bank_accounts.services.CuentaService;
@@ -28,6 +29,7 @@ public class CuentaServiceImpl implements CuentaService {
     private final CuentaRepository repository;
     private final ClienteServiceClient clienteServiceClient;
     private final MovimientoCuentaRepository movimientoCuentaRepository;
+    private final CuentaValidator cuentaValidator;
 
 
     @Override
@@ -57,7 +59,7 @@ public class CuentaServiceImpl implements CuentaService {
 
                 }).flatMap(countNumeroCuenta -> {
 
-                            DataValidationResult validationResult = cuenta.validateForCreating(countNumeroCuenta);
+                            DataValidationResult validationResult = cuentaValidator.validateForCreating(cuenta, countNumeroCuenta);
 
                             if (!validationResult.isValid()) {
                                 return Mono.error(InvalidDataException.getInstance(validationResult.getErrors()));
@@ -96,7 +98,7 @@ public class CuentaServiceImpl implements CuentaService {
 
                     IdentityFieldWrapper numeroCuentaWrapper = new IdentityFieldWrapper(countNumeroCuenta, Objects.equals(atomicEntity.get().getNumeroCuenta(), newData.getNumeroCuenta()));
 
-                    DataValidationResult validationResult = newData.validateForUpdating(numeroCuentaWrapper);
+                    DataValidationResult validationResult = cuentaValidator.validateForUpdating(newData, numeroCuentaWrapper);
 
                     if (!validationResult.isValid()) {
                         return Mono.error(InvalidDataException.getInstance(validationResult.getErrors()));
@@ -140,7 +142,7 @@ public class CuentaServiceImpl implements CuentaService {
 
                     IdentityFieldWrapper numeroCuentaWrapper = new IdentityFieldWrapper(countNumeroCuenta, Objects.equals(atomicEntity.get().getNumeroCuenta(), newData.getNumeroCuenta()));
 
-                    DataValidationResult validationResult = newData.validateForPatching(numeroCuentaWrapper);
+                    DataValidationResult validationResult = cuentaValidator.validateForPatching(newData, numeroCuentaWrapper);
 
                     if (!validationResult.isValid()) {
                         return Mono.error(InvalidDataException.getInstance(validationResult.getErrors()));
@@ -171,7 +173,7 @@ public class CuentaServiceImpl implements CuentaService {
             return movimientoCuentaRepository.countByCuenta(id);
         }).flatMap(countMovimientoCuenta -> {
 
-                    DataValidationResult validationResult = atomicEntity.get().validateForDeleting(countMovimientoCuenta);
+                    DataValidationResult validationResult = cuentaValidator.validateForDeleting(atomicEntity.get(), countMovimientoCuenta);
 
                     if (!validationResult.isValid()) {
                         return Mono.error(InvalidDataException.getInstance(validationResult.getErrors()));

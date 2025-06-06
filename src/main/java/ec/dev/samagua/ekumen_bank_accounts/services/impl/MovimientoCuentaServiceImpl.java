@@ -1,6 +1,7 @@
 package ec.dev.samagua.ekumen_bank_accounts.services.impl;
 
 import ec.dev.samagua.ekumen_bank_accounts.models.MovimientoCuenta;
+import ec.dev.samagua.ekumen_bank_accounts.models.validators.MovimientoCuentaValidator;
 import ec.dev.samagua.ekumen_bank_accounts.repositories.impl.CuentaRepository;
 import ec.dev.samagua.ekumen_bank_accounts.repositories.impl.MovimientoCuentaRepository;
 import ec.dev.samagua.ekumen_bank_accounts.services.MovimientoCuentaService;
@@ -26,6 +27,7 @@ public class MovimientoCuentaServiceImpl implements MovimientoCuentaService {
 
     private final MovimientoCuentaRepository repository;
     private final CuentaRepository cuentaRepository;
+    private final MovimientoCuentaValidator movimientoCuentaValidator;
 
     @Override
     public Mono<List<MovimientoCuenta>> findAll() {
@@ -49,7 +51,7 @@ public class MovimientoCuentaServiceImpl implements MovimientoCuentaService {
             movimientos.sort(Comparator.comparing(MovimientoCuenta::getFecha).reversed());
             movimientos.stream().findFirst().ifPresent(ultimoMovimiento -> movimientoCuenta.setSaldoAnterior(ultimoMovimiento.getSaldo()));
 
-            DataValidationResult validationResult = movimientoCuenta.validateForCreating();
+            DataValidationResult validationResult = movimientoCuentaValidator.validateForCreating(movimientoCuenta);
 
             if (!validationResult.isValid()) {
                 return Mono.error(InvalidDataException.getInstance(validationResult.getErrors()));
@@ -90,7 +92,7 @@ public class MovimientoCuentaServiceImpl implements MovimientoCuentaService {
 
             newData.setSaldoAnterior(ultimoMovimiento.getSaldoAnterior());
 
-            DataValidationResult validationResult = newData.validateForUpdating();
+            DataValidationResult validationResult = movimientoCuentaValidator.validateForUpdating(newData);
 
             if (!validationResult.isValid()) {
                 return Mono.error(InvalidDataException.getInstance(validationResult.getErrors()));
@@ -133,7 +135,7 @@ public class MovimientoCuentaServiceImpl implements MovimientoCuentaService {
 
             newData.setSaldoAnterior(ultimoMovimiento.getSaldoAnterior());
 
-            DataValidationResult validationResult = newData.validateForPatching();
+            DataValidationResult validationResult = movimientoCuentaValidator.validateForPatching(newData);
 
             if (!validationResult.isValid()) {
                 return Mono.error(InvalidDataException.getInstance(validationResult.getErrors()));
