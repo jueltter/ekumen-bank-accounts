@@ -1,12 +1,12 @@
 package ec.dev.samagua.ekumen_bank_accounts.controllers;
 
 import ec.dev.samagua.ekumen_bank_accounts.dtos.EstadoClienteCuentaMovimientoDto;
-import ec.dev.samagua.ekumen_bank_accounts.dtos_mappers.EstadoClienteCuentaMovimientoDtoMapper;
+import ec.dev.samagua.ekumen_bank_accounts.dtos.mappers.EstadoClienteCuentaMovimientoDtoMapper;
 import ec.dev.samagua.ekumen_bank_accounts.models.EstadoClienteCuentaMovimiento;
 import ec.dev.samagua.ekumen_bank_accounts.services.ReporteService;
-import ec.dev.samagua.ekumen_bank_accounts.utils.CustomDateUtils;
-import ec.dev.samagua.ekumen_bank_accounts.utils_controllers_models.ControllerResult;
-import ec.dev.samagua.ekumen_bank_accounts.utils_models.DateRange;
+import ec.dev.samagua.commons_lib.utils.CustomDateUtils;
+import ec.dev.samagua.commons_lib.models.controllers.ControllerResult;
+import ec.dev.samagua.commons_lib.models.DateRange;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

@@ -1,9 +1,9 @@
 package ec.dev.samagua.ekumen_bank_accounts.controllers_exception_handler;
 
-import ec.dev.samagua.ekumen_bank_accounts.utils_controllers_models.ControllerResult;
-import ec.dev.samagua.ekumen_bank_accounts.utils_exceptions.InvalidDataException;
-import ec.dev.samagua.ekumen_bank_accounts.utils_exceptions.RepositoryException;
-import ec.dev.samagua.ekumen_bank_accounts.utils_models.KeyValuePair;
+import ec.dev.samagua.commons_lib.models.controllers.ControllerResult;
+import ec.dev.samagua.commons_lib.exceptions.InvalidDataException;
+import ec.dev.samagua.commons_lib.exceptions.RepositoryException;
+import ec.dev.samagua.commons_lib.models.KeyValuePair;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

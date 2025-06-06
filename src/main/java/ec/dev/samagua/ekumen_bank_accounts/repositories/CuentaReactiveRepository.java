@@ -1,6 +1,6 @@
 package ec.dev.samagua.ekumen_bank_accounts.repositories;
 
-import ec.dev.samagua.ekumen_bank_accounts.entities.Cuenta;
+import ec.dev.samagua.ekumen_bank_accounts.models.Cuenta;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
