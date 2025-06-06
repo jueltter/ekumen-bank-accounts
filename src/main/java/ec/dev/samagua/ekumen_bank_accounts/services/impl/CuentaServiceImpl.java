@@ -42,34 +42,16 @@ public class CuentaServiceImpl implements CuentaService {
 
     @Override
     public Mono<Cuenta> create(Cuenta cuenta) {
-        if (cuenta.getNombreCliente() == null || cuenta.getNombreCliente().isBlank()) {
-            return Mono.error(InvalidDataException.getInstance(Collections.singletonMap("nombreCliente", "is mandatory")));
-        }
-
-        return clienteServiceClient.findByNombreOrClienteId(cuenta.getNombreCliente(), null)
-                .flatMap(clientes -> {
-                    if (clientes.isEmpty()) {
-                        return Mono.error(InvalidDataException.getInstance(Collections.singletonMap("nombreCliente", "is invalid")));
-                    }
-
-                    cuenta.setClienteId(clientes.stream().findFirst().get().getClienteId());
-
-                    return repository.countByNumeroCuenta(cuenta.getNumeroCuenta());
-
-
-                }).flatMap(countNumeroCuenta -> {
-
-                            DataValidationResult validationResult = cuentaValidator.validateForCreating(cuenta, countNumeroCuenta);
-
-                            if (!validationResult.isValid()) {
-                                return Mono.error(InvalidDataException.getInstance(validationResult.getErrors()));
-                            }
-
-                            return repository.create(cuenta);
-                        }
-
-
-                );
+        return cuentaValidator.validateForCreating(cuenta).flatMap(validationResult -> {
+            log.debug("Validation result: {}", validationResult);
+            if (!validationResult.isValid()) {
+                return Mono.error(InvalidDataException.getInstance(validationResult.getErrors()));
+            }
+            return clienteServiceClient.findByNombreOrClienteId(cuenta.getNombreCliente(), null);
+        }).flatMap(clientes -> {
+            clientes.stream().findFirst().ifPresent(cliente -> cuenta.setClienteId(cliente.getClienteId()));
+            return repository.create(cuenta);
+        });
     }
 
     @Override
