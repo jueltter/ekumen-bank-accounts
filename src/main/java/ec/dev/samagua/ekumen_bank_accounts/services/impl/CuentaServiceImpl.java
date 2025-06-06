@@ -54,7 +54,7 @@ public class CuentaServiceImpl implements CuentaService {
 
                     cuenta.setClienteId(clientes.stream().findFirst().get().getClienteId());
 
-                    return repository.countByClienteId(cuenta.getNumeroCuenta());
+                    return repository.countByNumeroCuenta(cuenta.getNumeroCuenta());
 
 
                 }).flatMap(countNumeroCuenta -> {
@@ -92,7 +92,7 @@ public class CuentaServiceImpl implements CuentaService {
 
                                 newData.setClienteId(clientes.stream().findFirst().get().getClienteId());
 
-                                return repository.countByClienteId(newData.getNumeroCuenta());
+                                return repository.countByNumeroCuenta(newData.getNumeroCuenta());
                             });
                 }).flatMap(countNumeroCuenta -> {
 
@@ -136,7 +136,7 @@ public class CuentaServiceImpl implements CuentaService {
 
                                 clientes.stream().findFirst().ifPresent(cliente -> newData.setClienteId(cliente.getClienteId()));
 
-                                return repository.countByClienteId(newData.getNumeroCuenta());
+                                return repository.countByNumeroCuenta(newData.getNumeroCuenta());
                             });
                 }).flatMap(countNumeroCuenta -> {
 

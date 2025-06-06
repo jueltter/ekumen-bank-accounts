@@ -41,7 +41,7 @@ public class CuentaRepository {
                 .doOnError(e -> log.error("Error creating cuenta", e));
     }
 
-    public Mono<Long> countByClienteId(String numeroCuenta) {
+    public Mono<Long> countByNumeroCuenta(String numeroCuenta) {
         return repository.countByNumeroCuenta(numeroCuenta)
                 .onErrorMap(RepositoryException::getReadException)
                 .doOnError(e -> log.error("Error counting cuentas by numeroCuenta", e));
